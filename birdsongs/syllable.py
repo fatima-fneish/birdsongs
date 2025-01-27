@@ -357,7 +357,7 @@ class Syllable(object):
         df_MotorGestures_coef = pd.DataFrame(data=np.concatenate((list(self.p.valuesdict().values()), self.t_interval, [self.NN, self.umbral_FF, self.type, self.country, self.state])), 
                                             index=np.concatenate((list(self.p.valuesdict().keys()), ["t_ini", "t_end", "NN", "umbral_FF", "type", 'country', 'state'])), 
                                             columns=["value"])
-        #name  = self.file_name[:-4] + "-"+str(self.id)+"-"+str(self.no_syllable)+"-MG.csv"
+        name  = self.file_name[:-4] + "-"+str(self.id)+"-"+str(self.no_syllable)+"-MG.csv"
         name  = self.file_name[:-4] + "-"+str(self.id)+"-"+str(self.no_syllable)+"-MG.csv"
         df_MotorGestures.to_csv(self.paths.MG_param / name, index=True)
         df_MotorGestures_coef.to_csv(self.paths.MG_param / name, index=True)
