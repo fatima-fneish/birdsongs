@@ -321,7 +321,7 @@ class Optimizer(Syllable, object):
         end = time.time()
         print("Optimal parameters found. The time of execution was {:.4f} hours".format((end-start)/60/60))
         
-        return self.bird, self.synth_bird
+        return self.bird, self.synth_bird, self.synth_bird.alpha, self.synth_bird.beta 
         
     # def SmoothAB(self, times, smooth=3, fraction=5):
     #     times   = np.array(times)
