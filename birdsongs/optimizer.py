@@ -286,8 +286,14 @@ class Optimizer(Syllable, object):
             obj       = Syllable(self.obj, tlim=times[i,:], umbral_FF=self.obj.umbral_FF, Nt=30, NN=NN)
             obj.p["gm"].set(value=optimal_gamm)
             obj_synth = obj.Solve(obj.p)
+            # Print initial alpha and beta
+            print(f"Syllable {i+1}/{times.shape[0]} - Initial Alpha: {obj_synth.alpha}")
+            print(f"Syllable {i+1}/{times.shape[0]} - Initial Beta: {obj_synth.beta}")
             self.OptimalParams(obj, Ns=Nba)
             obj_synth = obj.Solve(obj.p)
+            # Print optimized alpha and beta
+            print(f"Syllable {i+1}/{times.shape[0]} - Optimized Alpha: {obj_synth.alpha}")
+            print(f"Syllable {i+1}/{times.shape[0]} - Optimized Beta: {obj_synth.beta}")
             self.syllables.append(obj_synth.s)
             
             index_0, index_end = indexes[i,0], int(indexes[i,0]+obj_synth.s.size)
