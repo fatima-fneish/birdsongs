@@ -251,7 +251,7 @@ class Syllable(object):
 
             new_song += synthesized_segment
 
-         return new_song
+        return new_song
 
     #%%
     def AlphaBeta(self):
