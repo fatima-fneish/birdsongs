@@ -230,7 +230,7 @@ class Syllable(object):
     
     def motor_gesture_ode(t, y, alpha, beta):
         dydt = [y[1],-alpha * y[0] - beta * y[1] ]
-    return dydt
+        return dydt
 
     def generate_new_song(self, song, alphas, betas):
         new_song = np.zeros_like(song)  # Initialize array for new song
@@ -251,7 +251,7 @@ class Syllable(object):
 
             new_song += synthesized_segment
 
-    return new_song
+         return new_song
 
     #%%
     def AlphaBeta(self):
