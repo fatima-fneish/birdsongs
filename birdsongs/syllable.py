@@ -231,6 +231,19 @@ class Syllable(object):
     def motor_gesture_ode(t, y, alpha, beta):
         dydt = [y[1],-alpha * y[0] - beta * y[1] ]
         return dydt
+ 
+    def load_alpha_beta(file_path):
+    
+        df = pd.read_csv(file_path)
+    
+        if "Alpha" not in df.columns or "Beta" not in df.columns:
+           raise ValueError("CSV file must contain 'Alpha' and 'Beta' columns.")
+
+        alphas = df["Alpha"].to_numpy()
+        betas = df["Beta"].to_numpy()
+
+        print(f"Loaded {len(alphas)} alpha and beta values from {file_path}")
+        return alphas, betas
 
     def generate_new_song(self, song, alphas, betas):
         new_song = np.zeros_like(song)  # Initialize array for new song
