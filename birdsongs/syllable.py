@@ -232,10 +232,9 @@ class Syllable(object):
     """
     Defines the motor gestures ODE system using given alpha and beta values.
     """
-    dydt = [
+       dydt = [
         y[1],  # dy/dt = velocity
-        -alpha * y[0] - beta * y[1]  # d^2y/dt^2 = -α*y - β*dy/dt
-    ]
+        -alpha * y[0] - beta * y[1] ]
     return dydt
 
     def generate_new_song(self, song, alphas, betas):
