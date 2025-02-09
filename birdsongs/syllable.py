@@ -229,53 +229,27 @@ class Syllable(object):
         self.SCI    = self.f_msf / self.FF_fun(self.time)
     
     def motor_gesture_ode(t, y, alpha, beta):
-    """
-    Defines the motor gestures ODE system using given alpha and beta values.
-    """
-       dydt = [
-        y[1],  # dy/dt = velocity
-        -alpha * y[0] - beta * y[1] ]
+        dydt = [y[1],-alpha * y[0] - beta * y[1] ]
     return dydt
 
     def generate_new_song(self, song, alphas, betas):
-    """
-    Uses the motor gestures ODE system to generate a new synthetic song.
+        new_song = np.zeros_like(song)  # Initialize array for new song
+        t_span = np.linspace(0, len(song) / self.obj.fs, num=len(song), endpoint=True)
 
-    Parameters:
-        song (array): Original song waveform.
-        alphas (array): Optimized α values.
-        betas (array): Optimized β values.
+        for i in range(len(alphas)):
+            print(f"Generating synthetic segment {i+1}/{len(alphas)}")
+            alpha = float(alphas[i])
+            beta = float(betas[i])
+            y0 = [0, 0]  # [initial position, initial velocity]
 
-    Returns:
-        new_song (array): The generated synthetic song.
-    """
-      new_song = np.zeros_like(song)  # Initialize array for new song
-      t_span = np.linspace(0, len(song) / self.obj.fs, num=len(song), endpoint=True)
+            sol = scipy.integrate.solve_ivp(motor_gesture_ode, [t_span[0], t_span[-1]], y0, t_eval=t_span, args=(alpha, beta))
 
-      for i in range(len(alphas)):
-        print(f"Generating synthetic segment {i+1}/{len(alphas)}")
-        alpha = float(alphas[i])
-        beta = float(betas[i])
-        y0 = [0, 0]  # [initial position, initial velocity]
+            synthesized_segment = sol.y[0, :]
 
-        sol = scipy.integrate.solve_ivp(
-            motor_gesture_ode, 
-            [t_span[0], t_span[-1]], 
-            y0, 
-            t_eval=t_span, 
-            args=(alpha, beta)
-        )
+            if synthesized_segment.shape != new_song.shape:
+               synthesized_segment = np.interp(np.linspace(0, 1, len(new_song)), np.linspace(0, 1, len(synthesized_segment)), synthesized_segment)
 
-        synthesized_segment = sol.y[0, :]
-
-        if synthesized_segment.shape != new_song.shape:
-            synthesized_segment = np.interp(
-                np.linspace(0, 1, len(new_song)), 
-                np.linspace(0, 1, len(synthesized_segment)), 
-                synthesized_segment
-            )
-
-        new_song += synthesized_segment
+            new_song += synthesized_segment
 
     return new_song
 
